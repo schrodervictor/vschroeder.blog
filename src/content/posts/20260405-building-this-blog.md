@@ -11,20 +11,20 @@ tags:
   - meta
 ---
 
-While listening to some Iron Maiden and Black Label Society, I fest the urge
+While listening to some Iron Maiden and Black Label Society, I felt the urge
 to get back to blogging.
 
-I had a nice blog about 15 (!) years ago, at htts://drgeek.com.br. It was
-in fully written in portuguese and had some pretty nice content. I may have that
+I had a nice blog about 15 (!) years ago, at https://drgeek.com.br. It was
+fully written in Portuguese and had some pretty nice content. I may have that
 Wordpress DB around somewhere in my backups, but who knows... If I ever find it
-I'll check if any of that content is worth publishing here. Pure nostalgy!
+I'll check if any of that content is worth publishing here. Pure nostalgia!
 
 But for now let's start from scratch. This blog should look somewhat nerd, as I
-mostly write about programming and technology. Sometimes I'll, however, visit
-other topics such as music, travel, food, anything that I fell like talking about.
+mostly write about programming and technology. Sometimes I will, however, visit
+other topics such as music, travel, food, anything that I feel like talking about.
 
 My basic idea was:
-  - something that looks a terminal
+  - something that looks like a terminal
   - is easy to post from the command line
   - doesn't take much to maintain
 
@@ -69,32 +69,42 @@ Then just `cd blog && npm install` and off you go, right? ...well, not really.
 I'm too scared of supply chain attacks nowadays. Even axios got compromised
 recently!
 
-To be on the safe side, I took a good look into the `package.json` and made
-small, but important changes:
+To be on the safe side, I took a good look into the `package.json`. It's basically
+only Astro libraries and Typescript, but an `npm install --dry-run` reveals:
+
+```
+[...]
+added 365 packages in 198ms
+```
+
+Let's be honest, we just don't know what is being installed and there's no chance
+to audit 365 packages. That's the state of npm. So I made small, but important
+changes:
   - added a `.npmrc` file to the repo with `ignore-scripts=true`
   - added a `Makefile` to the project. It sounds old school, but it is extremely
-    useful to control what are the safe commands to run in your project, specialy
+    useful to control what are the safe commands to run in your project, especially
     in times of "agentic coding"
 
-In the `Makefile` I put a "proxy" targe to every npm command expected to run but
+In the `Makefile` I put a "proxy" target to every npm command expected to run but
 the list will grow over time, with deployment targets too. Leveraging that, I
 made sure:
-  - All targets will honour the `package-lock.json` file, unless an explicit
-    order to update is given
-  - When an update is needed, only packages older that 7 days will be installed
+  - All targets will honour the `package-lock.json` file through `npm clean-install`
+    command, unless an explicit order to update is given
+  - When an update is needed, only packages older than 7 days will be installed,
+    using the `--before` flag
 
 Another good practice is to run these things as _untrusted code_ inside an
 isolated environment, such as a container. I'll explain the modifications and
 explain how to do it in a following post.
 
 You may ask: isn't this waaaay too much just for a tiny blog? Allow me to answer
-that, pawdwan: it's not about the blog. Nobody cares about my little blog, but
+that, padawan: it's not about the blog. Nobody cares about my little blog, but
 I'm running many other different things on this machine, online banking, paypal,
 all those online accounts logged in on my browser, crypto wallets, etc. The
 list goes on.
 
 Being careful is definitely not about this blog. It is about how to take care
-of your online life in general. Life has thaught me that you can't be paranoid
+of your digital life in general. Life has taught me that you can't be paranoid
 enough.
 
 ## Source code structure
@@ -107,29 +117,29 @@ reload. The project structure is straightforward:
 
 ```
 src/
-  content/
-    posts/           # Markdown blog posts
-  components/
-    PostCard.astro   # Post preview card
-    FormattedDate.astro
-  layouts/
-    BaseLayout.astro # Shell for every page (head, nav, footer)
-    PostLayout.astro # Wraps individual posts
-  pages/
-    index.astro      # Homepage
-    posts/
-      index.astro    # Post listing
-      [...slug].astro # Dynamic route: one page per post
-    tags/
-      index.astro    # All tags
-      [tag].astro    # Posts filtered by tag
-    about.astro
-    404.astro
-    rss.xml.js       # RSS feed
-  styles/
-    terminal.css     # Color scheme and base styles
-    main.css         # Layout
-    ...              # Other modular CSS files
+├── content/
+│   └── posts/            # Markdown blog posts
+├── components/
+│   ├── PostCard.astro    # Post preview card
+│   └── FormattedDate.astro
+├── layouts/
+│   ├── BaseLayout.astro  # Shell for every page (head, nav, footer)
+│   └── PostLayout.astro  # Wraps individual posts
+├── pages/
+│   ├── index.astro       # Homepage
+│   ├── posts/
+│   │   ├── index.astro   # Post listing
+│   │   └── [...slug].astro # Dynamic route: one page per post
+│   ├── tags/
+│   │   ├── index.astro   # All tags
+│   │   └── [tag].astro   # Posts filtered by tag
+│   ├── about.md
+│   ├── 404.astro
+│   └── rss.xml.js        # RSS feed
+└── styles/
+    ├── terminal.css      # Color scheme and base styles
+    ├── main.css          # Layout
+    └── ...               # Other modular CSS files
 ```
 
 Astro uses **file-based routing**. Each `.astro` file in `src/pages/` becomes a
@@ -205,18 +215,39 @@ The entire visual identity comes from a handful of CSS custom properties in
 
 ```css
 :root {
-  --background: #1a170f;
-  --foreground: #eceae5;
-  --accent: #eec35e;
+  --background: #0c1210;
+  --foreground: #b0c4b0;
+  --accent: #5fba7d;
   --radius: 0;
   --font-size: 1rem;
 }
 ```
 
-Dark background, off-white text, gold accent, sharp corners. The body font is
-Fira Code — a monospace font with ligatures. Every element on the site
-references these variables, so swapping the entire color scheme is a matter of
-changing five values.
+Near-black with a green tint, muted sage text, and a medium green accent. The
+idea was to evoke old phosphor CRT terminals without the eye strain of pure
+`#33ff33` on black. The body font is Fira Code — a monospace font with
+ligatures. Every element on the site references these variables, so swapping the
+entire color scheme is a matter of changing five values.
+
+The original theme used a monochrome syntax highlighting approach — almost
+everything in the code blocks was either foreground or accent color. That's
+faithful to the terminal aesthetic but hard to scan. I replaced it with a
+multi-color palette that still feels at home on the dark green background:
+
+```css
+:root {
+  --astro-code-token-keyword: #7ec8e3;           /* soft blue */
+  --astro-code-token-function: #c3e88d;           /* lime green */
+  --astro-code-token-string-expression: #ecc48d;  /* warm amber */
+  --astro-code-token-constant: #f78c6c;           /* soft orange */
+  --astro-code-token-selector: #c792ea;           /* muted purple */
+  --astro-code-token-comment: #5e6e5e;            /* dim green-gray */
+}
+```
+
+Shiki (Astro's syntax highlighter) uses the `css-variables` theme, which means
+all token colors are controlled by CSS custom properties. Changing the palette
+is just editing the variables — no build config or plugin needed.
 
 Some nice details in the CSS:
 
@@ -280,7 +311,7 @@ references, marked it `private`:
 ```
 
 Simplified `astro.config.mjs` — the template had a conditional `base` path for
-GitHub Pages deployment. Since I'll be deploying differently, nothing of that
+GitHub Pages deployment. Since I'm deploying differently, none of that
 is needed:
 
 ```javascript
@@ -292,7 +323,7 @@ export default defineConfig({
     shikiConfig: {
       theme: 'css-variables',
       langs: [],
-      wrap: true,
+      wrap: false,
     },
   },
 });
