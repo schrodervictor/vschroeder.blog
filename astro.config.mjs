@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://some-domain.example',
+  site: 'https://vschroeder.blog',
   base: '/',
   integrations: [sitemap()],
   markdown: {

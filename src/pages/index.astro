@@ -8,7 +8,7 @@ const posts = (await getCollection('posts'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title="Terminal">
+<BaseLayout title="VSchroeder's Blog - Code, AI, Linux, Metal and more">
   <div class="posts">
     {posts.length === 0 ? (
       <p>No posts yet. Check back soon!</p>

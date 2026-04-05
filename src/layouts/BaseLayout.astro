@@ -5,11 +5,8 @@ export interface Props {
   image?: string;
 }
 
-const {
-  title,
-  description = 'The blog description',
-  image,
-} = Astro.props;
+const { title, image } = Astro.props;
+const description = "VSchroeder's blog: Code, AI, Linux, Metal and more";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 ---
@@ -22,22 +19,22 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="alternate icon" type="image/x-icon" href={`${base}favicon.ico`} />
     <meta name="generator" content={Astro.generator} />
-    
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    
+
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     {image && <meta property="og:image" content={new URL(image, Astro.url)} />}
-    
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {image && <meta name="twitter:image" content={new URL(image, Astro.url)} />}
-    
+
     <link rel="sitemap" href={`${base}sitemap-index.xml`} />
     <link rel="alternate" type="application/rss+xml" title="RSS" href={`${base}rss.xml`} />
   </head>
@@ -48,7 +45,7 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
           <div class="header__logo">
             <a href={base}>
               <div class="logo">
-                Terminal
+                vschroeder.blog
               </div>
             </a>
           </div>
@@ -63,7 +60,7 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
             </li>
           </ul>
         </div>
-        
+
         <nav class="navigation-menu">
           <ul class="navigation-menu__inner menu--desktop">
             <li><a href={`${base}posts/`}>Posts</a></li>
@@ -72,11 +69,11 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
           </ul>
         </nav>
       </header>
-      
+
       <main class="content">
         <slot />
       </main>
-      
+
       <footer class="footer">
         <div class="footer__inner">
           <div class="copyright">
@@ -85,13 +82,13 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
         </div>
       </footer>
     </div>
-    
+
     <script>
       // Menu functionality
       (() => {
         const container = document.querySelector(".container");
         const menus = document.querySelectorAll(".menu");
-        
+
         // Close menus when clicking outside
         document.body.addEventListener("click", () => {
           menus.forEach(menu => {
@@ -100,23 +97,23 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
             }
           });
         });
-        
+
         // Close menus on window resize
         window.addEventListener("resize", () => {
           menus.forEach(menu => {
             menu.classList.remove("open");
           });
         });
-        
+
         // Menu trigger functionality
         menus.forEach(menu => {
           const trigger = menu.querySelector(".menu__trigger");
           const dropdown = menu.querySelector<HTMLElement>(".menu__dropdown");
-          
+
           if (trigger && dropdown) {
             trigger.addEventListener("click", event => {
               event.stopPropagation();
-              
+
               if (menu.classList.contains("open")) {
                 menu.classList.remove("open");
               } else {
@@ -124,14 +121,14 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
                 menus.forEach(m => m.classList.remove("open"));
                 menu.classList.add("open");
               }
-              
+
               // Adjust dropdown position if it goes outside container
               if (container && dropdown.getBoundingClientRect().right > container.getBoundingClientRect().right) {
                 dropdown.style.left = "auto";
                 dropdown.style.right = "0";
               }
             });
-            
+
             dropdown.addEventListener("click", e => e.stopPropagation());
           }
         });
