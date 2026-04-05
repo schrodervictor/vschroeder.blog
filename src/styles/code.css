@@ -80,39 +80,58 @@
   display: block;
 }
 
-/* Line numbers */
-.line-numbers {
-  position: relative;
-  padding-left: 3.8em !important;
-  counter-reset: linenumber;
+/* Line numbers via CSS counters on Shiki's .line spans */
+pre.astro-code {
+  counter-reset: line;
+  padding-left: 4.5em !important;
+  white-space: pre !important;
+  word-wrap: normal !important;
+  overflow-x: auto;
 }
 
-.line-numbers > code {
-  position: relative;
-  white-space: inherit;
-}
-
-.line-numbers .line-numbers-rows {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  font-size: 100%;
-  left: -3.8em;
-  width: 3em;
-  letter-spacing: -1px;
-  border-right: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-  user-select: none;
-}
-
-.line-numbers-rows > span {
+pre.astro-code code {
   display: block;
-  counter-increment: linenumber;
 }
 
-.line-numbers-rows > span:before {
-  content: counter(linenumber);
-  color: color-mix(in srgb, var(--foreground) 50%, transparent);
-  display: block;
-  padding-right: 0.8em;
+pre.astro-code .line {
+  display: inline-block;
+  width: 100%;
+  counter-increment: line;
+  position: relative;
+}
+
+pre.astro-code .line::before {
+  content: counter(line);
+  display: inline-block;
+  width: 3.5em;
+  margin-left: -4.5em;
+  padding-right: 1em;
   text-align: right;
+  color: color-mix(in srgb, var(--foreground) 30%, transparent);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Shell prompt for bash/sh/zsh code blocks */
+pre.astro-code[data-language="bash"],
+pre.astro-code[data-language="sh"],
+pre.astro-code[data-language="zsh"],
+pre.astro-code[data-language="shell"] {
+  counter-reset: none;
+  padding-left: 2.5em !important;
+}
+
+pre.astro-code[data-language="bash"] .line::before,
+pre.astro-code[data-language="sh"] .line::before,
+pre.astro-code[data-language="zsh"] .line::before,
+pre.astro-code[data-language="shell"] .line::before {
+  content: "$";
+  width: 2em;
+  margin-left: -2.5em;
+  padding-right: 0.5em;
+}
+
+/* Hide prompt/numbers on empty trailing lines */
+pre.astro-code .line:last-child:empty::before {
+  content: none;
 }

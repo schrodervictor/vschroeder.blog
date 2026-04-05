@@ -11,7 +11,7 @@ export default defineConfig({
     shikiConfig: {
       theme: 'css-variables',
       langs: [],
-      wrap: true,
+      wrap: false,
     },
   },
 });
