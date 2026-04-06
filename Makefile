@@ -1,7 +1,9 @@
-.PHONY: dev build preview clean check test update
+.PHONY: dev build preview deploy clean check test update bootstrap tf-init tf-apply
+
+TF ?= terraform
 
 node_modules: package-lock.json
-	npm ci
+	npm clean-install
 	@touch node_modules
 
 # Local development server
@@ -16,6 +18,10 @@ build: node_modules
 preview: node_modules
 	npm run preview
 
+# Deploy to Firebase Hosting
+deploy: build
+	firebase deploy --only hosting --project '$(PROJECT)'
+
 # Type check only
 check: node_modules
 	npm run check
@@ -29,6 +35,20 @@ test: node_modules
 update:
 	npm update --before="$$(date -d '7 days ago' +%Y-%m-%d)"
 	@touch node_modules
+
+# One-time GCP project bootstrap
+# Usage: make bootstrap PROJECT=my-blog BILLING=012345-6789AB-CDEF01 REGION=europe-west10
+bootstrap:
+	./scripts/bootstrap.sh '$(PROJECT)' '$(BILLING)' '$(REGION)'
+
+# Initialize Terraform backend
+# Usage: make tf-init PROJECT=my-blog
+tf-init:
+	cd infra/tf && $(TF) init -backend-config='bucket=$(PROJECT)-infra-state'
+
+# Apply Terraform configuration
+tf-apply:
+	cd infra/tf && $(TF) apply
 
 # Remove build artifacts
 clean:

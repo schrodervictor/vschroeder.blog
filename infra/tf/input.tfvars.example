@@ -1,0 +1,3 @@
+project_id = "my-blog"
+region     = "europe-west10"
+domain     = ""  # e.g. "blog.example.com"
