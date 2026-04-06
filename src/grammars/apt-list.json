@@ -1,0 +1,44 @@
+{
+  "displayName": "APT Source (one-line)",
+  "name": "apt-list",
+  "scopeName": "source.apt-list",
+  "repository": {},
+  "patterns": [
+    {
+      "comment": "Comments",
+      "match": "^(#.*)$",
+      "name": "comment.line.number-sign.apt-list"
+    },
+    {
+      "comment": "deb or deb-src keyword",
+      "match": "^(deb(?:-src)?)\\b",
+      "name": "keyword.other.apt-list"
+    },
+    {
+      "comment": "Options in brackets",
+      "begin": "\\[",
+      "end": "\\]",
+      "name": "meta.options.apt-list",
+      "beginCaptures": { "0": { "name": "punctuation.definition.options.begin.apt-list" } },
+      "endCaptures": { "0": { "name": "punctuation.definition.options.end.apt-list" } },
+      "patterns": [
+        {
+          "match": "([a-z][a-z0-9-]*)(=)",
+          "captures": {
+            "1": { "name": "variable.other.apt-list" },
+            "2": { "name": "punctuation.separator.key-value.apt-list" }
+          }
+        },
+        {
+          "match": "[^\\]\\s]+",
+          "name": "string.unquoted.apt-list"
+        }
+      ]
+    },
+    {
+      "comment": "URLs",
+      "match": "https?://[^\\s]+",
+      "name": "string.other.link.apt-list"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "displayName": "APT Source (DEB822)",
+  "name": "apt-source",
+  "scopeName": "source.apt-source",
+  "repository": {},
+  "patterns": [
+    {
+      "comment": "Comments",
+      "match": "^(#.*)$",
+      "name": "comment.line.number-sign.apt-source"
+    },
+    {
+      "comment": "Key-value pairs",
+      "match": "^(Types|URIs|Suites|Components|Signed-By|Architectures|Enabled|Languages|Targets)(:)\\s*(.*)",
+      "captures": {
+        "1": { "name": "keyword.other.apt-source" },
+        "2": { "name": "punctuation.separator.key-value.apt-source" },
+        "3": { "name": "string.unquoted.apt-source" }
+      }
+    },
+    {
+      "comment": "Unknown key-value pairs",
+      "match": "^([A-Za-z][A-Za-z0-9-]*)(:)\\s*(.*)",
+      "captures": {
+        "1": { "name": "variable.other.apt-source" },
+        "2": { "name": "punctuation.separator.key-value.apt-source" },
+        "3": { "name": "string.unquoted.apt-source" }
+      }
+    }
+  ]
+}
