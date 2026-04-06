@@ -1,4 +1,4 @@
-.PHONY: dev build preview clean check update
+.PHONY: dev build preview clean check test update
 
 node_modules: package-lock.json
 	npm ci
@@ -19,6 +19,10 @@ preview: node_modules
 # Type check only
 check: node_modules
 	npm run check
+
+# Run unit tests
+test: node_modules
+	npm test
 
 # Update dependencies
 # Only versions at least 7 days old to mitigate supply chain attacks

@@ -112,23 +112,14 @@ pre.astro-code .line::before {
   pointer-events: none;
 }
 
-/* Shell prompt for bash/sh/zsh code blocks */
-pre.astro-code[data-language="bash"],
-pre.astro-code[data-language="sh"],
-pre.astro-code[data-language="zsh"],
+/* No line numbers for shell (command line snippets) */
 pre.astro-code[data-language="shell"] {
   counter-reset: none;
-  padding-left: 2.5em !important;
+  padding-left: 10px !important;
 }
 
-pre.astro-code[data-language="bash"] .line::before,
-pre.astro-code[data-language="sh"] .line::before,
-pre.astro-code[data-language="zsh"] .line::before,
 pre.astro-code[data-language="shell"] .line::before {
-  content: "$";
-  width: 2em;
-  margin-left: -2.5em;
-  padding-right: 0.5em;
+  content: none;
 }
 
 /* Hide prompt/numbers on empty trailing lines */
