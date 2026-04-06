@@ -80,7 +80,9 @@ snippets are written in Markdown on this blog:
   alone on a line
 - **Everything else** is output and gets skipped
 
-This also maps to a design decision in the CSS. The blog uses two different
+This also maps to a design decision in the
+[CSS](https://github.com/schrodervictor/vschroeder.blog/blob/main/src/styles/code.css).
+The blog uses two different
 language hints for shell-related code:
 
 - `shell` — interactive sessions with prompts and output, no line numbers
@@ -158,7 +160,8 @@ heredocs), `<<'EOF'` (no variable expansion), and `<<"EOF"`.
 
 ## Wiring it to the copy button
 
-The copy button itself is straightforward. On `DOMContentLoaded`, the script
+The copy button itself is straightforward. On `DOMContentLoaded`, the script in
+[`PostLayout.astro`](https://github.com/schrodervictor/vschroeder.blog/blob/main/src/layouts/PostLayout.astro)
 wraps each code block in a container with a title bar showing the language and
 a copy button. The interesting part is one line:
 
@@ -174,8 +177,10 @@ language hint that Shiki already puts on each `<pre>` block as a
 ## Testing it
 
 Since this logic has enough edge cases to make me nervous, I extracted the
-functions into their own module (`src/lib/shell-commands.ts`) and wrote unit
-tests with vitest.
+functions into their own module
+([`src/lib/shell-commands.ts`](https://github.com/schrodervictor/vschroeder.blog/blob/main/src/lib/shell-commands.ts))
+and wrote [unit tests](https://github.com/schrodervictor/vschroeder.blog/blob/main/src/lib/shell-commands.test.ts)
+with vitest.
 
 Some of the cases worth testing explicitly:
 

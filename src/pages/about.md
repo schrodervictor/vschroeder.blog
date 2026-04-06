@@ -25,4 +25,7 @@ When I first sat in front of that IBM 5150 with two 5¼" floppy drives and a
 black/green phosphor screen, a world of possibilities unfolded before me. I
 never stopped.
 
+The source code for this blog is
+[on GitHub](https://github.com/schrodervictor/vschroeder.blog).
+
 Join me in this journey and let's talk nerdy together.

@@ -29,6 +29,7 @@ My basic idea was:
   - doesn't take much to maintain
 
 This post walks through the decisions I made and the setup I ended up with.
+The full source code is [on GitHub](https://github.com/schrodervictor/vschroeder.blog).
 
 ## Choosing the stack
 
@@ -61,8 +62,8 @@ The [astro-theme-terminal](https://github.com/dennisklappe/astro-theme-terminal)
 by Dennis Klappe is a port of panr's Hugo Terminal theme to Astro. I cloned it
 directly:
 
-```bash
-git clone https://github.com/dennisklappe/astro-theme-terminal.git blog
+```shell
+$ git clone https://github.com/dennisklappe/astro-theme-terminal.git blog
 ```
 
 Then just `cd blog && npm install` and off you go, right? ...well, not really.
@@ -149,7 +150,7 @@ Astro generates as one HTML page per post (or per tag) at build time.
 ## How content works
 
 Posts are Markdown files with YAML frontmatter, validated by a Zod schema in
-`src/content.config.ts`:
+[`src/content.config.ts`](https://github.com/schrodervictor/vschroeder.blog/blob/main/src/content.config.ts):
 
 ```typescript
 import { defineCollection, z } from 'astro:content';
@@ -211,7 +212,7 @@ to hide a post without deleting it.
 ## The terminal aesthetic
 
 The entire visual identity comes from a handful of CSS custom properties in
-`src/styles/terminal.css`:
+[`src/styles/terminal.css`](https://github.com/schrodervictor/vschroeder.blog/blob/main/src/styles/terminal.css):
 
 ```css
 :root {
@@ -264,8 +265,8 @@ Since this is now a real blog and not a theme showcase, all of that had to go.
 
 Deleted the demo content:
 
-```bash
-rm src/content/posts/* public/*
+```shell
+$ rm src/content/posts/* public/*
 ```
 
 Simplified the navigation in `src/layouts/BaseLayout.astro` — from a nested
@@ -310,7 +311,7 @@ references, marked it `private`:
 }
 ```
 
-Simplified `astro.config.mjs` — the template had a conditional `base` path for
+Simplified [`astro.config.mjs`](https://github.com/schrodervictor/vschroeder.blog/blob/main/astro.config.mjs) — the template had a conditional `base` path for
 GitHub Pages deployment. Since I'm deploying differently, none of that
 is needed:
 
@@ -336,9 +337,9 @@ terminal color scheme instead of using hardcoded colors.
 
 Writing a new post is as simple as creating a new Markdown file:
 
-```bash
+```shell
 # Create the file
-cat > src/content/posts/my-new-post.md << 'EOF'
+$ cat > src/content/posts/my-new-post.md << 'EOF'
 ---
 title: 'My New Post'
 description: 'What this post is about'
@@ -350,11 +351,11 @@ Content goes here.
 EOF
 
 # Preview locally
-make dev
+$ make dev
 
 # Build and verify
-make build
-make preview
+$ make build
+$ make preview
 ```
 
 That's the whole workflow. Markdown in, static site out. No CMS, no database, no
