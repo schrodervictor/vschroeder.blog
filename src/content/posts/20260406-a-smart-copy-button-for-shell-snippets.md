@@ -74,7 +74,7 @@ Before writing any parsing logic, I established a convention for how shell
 snippets are written in Markdown on this blog:
 
 - **Commands** start with `$ ` (dollar sign + space)
-- **Comments** start with `# ` (hash + space) — these are preserved
+- **Comments** start with `# ` (hash + space), these are preserved
 - **Continuation lines** follow a line ending with `\`
 - **Heredoc bodies** follow a line containing `<<LABEL` until `LABEL` appears
   alone on a line
@@ -85,8 +85,8 @@ This also maps to a design decision in the
 The blog uses two different
 language hints for shell-related code:
 
-- `shell` — interactive sessions with prompts and output, no line numbers
-- `bash`, `sh`, `zsh` — scripts with line numbers, no prompts
+- `shell`: interactive sessions with prompts and output, no line numbers
+- `bash`, `sh`, `zsh`: scripts with line numbers, no prompts
 
 The `shell` hint tells both the CSS (skip line numbers) and the copy button
 (extract commands) that this is an interactive snippet.
@@ -137,12 +137,12 @@ export function extractShellCommands(text: string): string {
 
 Three states drive the logic:
 
-1. **Default** — only lines starting with `$ ` or `# ` are captured. The `$ `
+1. **Default**: only lines starting with `$ ` or `# ` are captured. The `$ `
    prefix is stripped; `# ` is kept as-is (it's a valid shell comment).
-2. **Capturing continuations** — when a captured line ends with `\`, the next
+2. **Capturing continuations**: when a captured line ends with `\`, the next
    line is also captured regardless of what it starts with. This continues
    until a line doesn't end with `\`.
-3. **Inside heredoc** — when a captured line (or continuation line) contains
+3. **Inside heredoc**: when a captured line (or continuation line) contains
    `<<LABEL`, every subsequent line is captured verbatim until `LABEL`
    appears alone on a line.
 
@@ -220,7 +220,7 @@ it('preserves tab indentation inside heredoc', () => {
 });
 ```
 
-Indentation inside heredocs is critical — a Makefile with spaces instead of
+Indentation inside heredocs is critical. A Makefile with spaces instead of
 tabs is broken. The function preserves whitespace exactly as written.
 
 Running the suite:
@@ -240,14 +240,14 @@ npx vitest run
 
 The feature spans three layers:
 
-1. **Convention** — Markdown authors write `$ ` before commands, which doubles
+1. **Convention**: Markdown authors write `$ ` before commands, which doubles
    as a visual prompt for readers
-2. **CSS** — `shell` blocks get no line numbers; `bash`/`sh`/`zsh` blocks get
+2. **CSS**: `shell` blocks get no line numbers; `bash`/`sh`/`zsh` blocks get
    line numbers (they're scripts, not interactive sessions)
-3. **JavaScript** — the copy button parses `shell` blocks to extract only the
+3. **JavaScript**: the copy button parses `shell` blocks to extract only the
    executable parts; other languages copy raw
 
-Each layer is simple on its own. The complexity — and the part worth testing —
+Each layer is simple on its own. The complexity (and the part worth testing)
 is in the extraction logic's state machine and its interaction with shell
 conventions that have existed since the 70s.
 

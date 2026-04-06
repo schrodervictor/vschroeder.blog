@@ -21,13 +21,13 @@ Astro builds the content as static files, which makes hosting very easy. For a
 static site, you just need something that serves files from a CDN with HTTPS.
 There are many options:
 
-- **GitHub Pages** — free, zero config, deploy on push. Tied to GitHub.
-- **Cloudflare Pages** — free tier, fast CDN, great DX. Connect a repo and go.
-- **Netlify** — similar to Cloudflare Pages, deploy previews for PRs.
-- **Vercel** — native Astro support, free tier, serverless-first.
-- **AWS S3 + CloudFront** — full control, more moving parts.
-- **GCP Cloud Storage + Cloud CDN** — same idea, Google's ecosystem.
-- **Firebase Hosting** — CDN, HTTPS, custom domains, atomic deploys, all managed.
+- **GitHub Pages**: free, zero config, deploy on push. Tied to GitHub.
+- **Cloudflare Pages**: free tier, fast CDN, great DX. Connect a repo and go.
+- **Netlify**: similar to Cloudflare Pages, deploy previews for PRs.
+- **Vercel**: native Astro support, free tier, serverless-first.
+- **AWS S3 + CloudFront**: full control, more moving parts.
+- **GCP Cloud Storage + Cloud CDN**: same idea, Google's ecosystem.
+- **Firebase Hosting**: CDN, HTTPS, custom domains, atomic deploys, all managed.
 
 After some quick consideration, I decided to go with Firebase Hosting. I've been
 wanting to play with it for a while already, but never really had a good
@@ -211,7 +211,7 @@ resource "google_project_service" "apis" {
 }
 ```
 
-The `disable_on_destroy = false` is important — you don't want `terraform
+The `disable_on_destroy = false` is important: you don't want `terraform
 destroy` to disable APIs that other resources might depend on.
 
 ### Firebase Hosting
@@ -252,7 +252,7 @@ Here's something that cost me time: even with Owner role on the GCP project,
 `firebase projects:addfirebase` fails with a cryptic `403 PERMISSION_DENIED` if
 you've never accepted the Firebase Terms of Service for that project.
 
-The error message says "The caller does not have permission" — no hint that it's
+The error message says "The caller does not have permission", no hint that it's
 about ToS acceptance. The only fix is to go to
 [console.firebase.google.com](https://console.firebase.google.com/), click "Add
 project", and select your existing GCP project through the web UI.
@@ -459,25 +459,25 @@ Two commands. The rest is having fun writing Markdown.
 
 For the sake of honesty, here's what didn't work on the first try:
 
-1. **Firebase CLI 403 error** — the ToS issue described above. Wasted a good
+1. **Firebase CLI 403 error**: the ToS issue described above. Wasted a good
    chunk of time debugging what turned out to be a web-only workaround.
 
-2. **Spaceship provider `dynamic` blocks** — the provider uses list attributes,
+2. **Spaceship provider `dynamic` blocks**: the provider uses list attributes,
    not nested blocks. `dynamic "records"` failed with "Blocks of type records
    are not expected here." Switching to a `for` expression fixed it.
 
-3. **`gcloud` vs `firebase` CLI auth** — these are separate auth sessions.
+3. **`gcloud` vs `firebase` CLI auth**: these are separate auth sessions.
    Being logged into gcloud doesn't mean the Firebase CLI is authenticated. Had
    to run `firebase login` separately.
 
-4. **Application Default Credentials** — `terraform init` failed because
+4. **Application Default Credentials**: `terraform init` failed because
    Terraform couldn't find credentials for the GCS backend. Fixed with
    `gcloud auth application-default login`.
 
-5. **Transient DNS records** — my dynamic approach to reading Firebase's
+5. **Transient DNS records**: my dynamic approach to reading Firebase's
    `required_dns_updates` worked on the first apply but broke on every
    subsequent one. The attribute empties out after domain verification, causing
-   an index error — or worse, deleting the DNS records. Had to switch to static
+   an index error, or worse, deleting the DNS records. Had to switch to static
    records.
 
 None of these were hard to fix, but they're the kind of thing that eats an

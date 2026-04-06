@@ -35,15 +35,15 @@ The full source code is [on GitHub](https://github.com/schrodervictor/vschroeder
 
 There's no shortage of static site generators. The usual suspects:
 
-- **Hugo** — fast, single binary, huge theme ecosystem. The
+- **Hugo**: fast, single binary, huge theme ecosystem. The
   [Terminal theme](https://github.com/panr/hugo-theme-terminal) is the closest
   to the aesthetic I was after.
-- **Zola** — similar to Hugo, written in Rust, simpler template system.
-- **11ty** — flexible, minimal opinions, Node-based.
-- **Astro** — modern, component-based, Markdown-first, static output.
+- **Zola**: similar to Hugo, written in Rust, simpler template system.
+- **11ty**: flexible, minimal opinions, Node-based.
+- **Astro**: modern, component-based, Markdown-first, static output.
 
 Hugo with the Terminal theme was the obvious first choice. But I knew I'd want
-to iterate on the design — ideas like making it look more like tmux, adding vim
+to iterate on the design: making it look more like tmux, adding vim
 keybindings, building interactive elements. Hugo's Go templates are fine for
 picking a theme and writing posts, but they get awkward fast when you want to
 build custom UI.
@@ -51,7 +51,7 @@ build custom UI.
 Astro gives you the same easy Markdown workflow, but the component system
 (standard HTML/CSS/JS, or React/Svelte if you want) makes it much easier to
 evolve the frontend without fighting the template engine. And it still outputs a
-fully static site — no server to maintain.
+fully static site, no server to maintain.
 
 So: **Astro** for the framework, with a port of the Terminal theme as the
 starting point.
@@ -226,11 +226,11 @@ The entire visual identity comes from a handful of CSS custom properties in
 
 Near-black with a green tint, muted sage text, and a medium green accent. The
 idea was to evoke old phosphor CRT terminals without the eye strain of pure
-`#33ff33` on black. The body font is Fira Code — a monospace font with
+`#33ff33` on black. The body font is Fira Code, a monospace font with
 ligatures. Every element on the site references these variables, so swapping the
 entire color scheme is a matter of changing five values.
 
-The original theme used a monochrome syntax highlighting approach — almost
+The original theme used a monochrome syntax highlighting approach, almost
 everything in the code blocks was either foreground or accent color. That's
 faithful to the terminal aesthetic but hard to scan. I replaced it with a
 multi-color palette that still feels at home on the dark green background:
@@ -248,7 +248,7 @@ multi-color palette that still feels at home on the dark green background:
 
 Shiki (Astro's syntax highlighter) uses the `css-variables` theme, which means
 all token colors are controlled by CSS custom properties. Changing the palette
-is just editing the variables — no build config or plugin needed.
+is just editing the variables. No build config or plugin needed.
 
 Some nice details in the CSS:
 
@@ -269,7 +269,7 @@ Deleted the demo content:
 $ rm src/content/posts/* public/*
 ```
 
-Simplified the navigation in `src/layouts/BaseLayout.astro` — from a nested
+Simplified the navigation in `src/layouts/BaseLayout.astro`, from a nested
 dropdown with demo page links to a flat list:
 
 ```html
@@ -292,7 +292,7 @@ Stripped the footer down to the essentials:
 </footer>
 ```
 
-Cleaned up `package.json` — renamed, removed the template author and repo
+Cleaned up `package.json`: renamed, removed the template author and repo
 references, marked it `private`:
 
 ```json
@@ -311,7 +311,7 @@ references, marked it `private`:
 }
 ```
 
-Simplified [`astro.config.mjs`](https://github.com/schrodervictor/vschroeder.blog/blob/main/astro.config.mjs) — the template had a conditional `base` path for
+Simplified [`astro.config.mjs`](https://github.com/schrodervictor/vschroeder.blog/blob/main/astro.config.mjs). The template had a conditional `base` path for
 GitHub Pages deployment. Since I'm deploying differently, none of that
 is needed:
 
@@ -365,7 +365,7 @@ runtime.
 
 The infrastructure and deployment setup will be covered in the next post.
 
-After that, the fun part — iterating on the design. I have ideas about making
+After that, the fun part: iterating on the design. I have ideas about making
 it feel more like an actual terminal: tmux-style pane layouts, a vim-like
 command bar, keyboard navigation. Astro's component model makes all of that
 possible without abandoning the simple Markdown posting workflow.
