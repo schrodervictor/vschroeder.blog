@@ -24,13 +24,13 @@ terraform {
 }
 
 provider "google" {
-  project = var.project_id
-  region  = var.region
+  project = local.project_id
+  region  = local.region
 }
 
 provider "google-beta" {
-  project = var.project_id
-  region  = var.region
+  project = local.project_id
+  region  = local.region
 }
 
 # Authenticates via SPACESHIP_API_KEY and SPACESHIP_API_SECRET env vars.

@@ -28,7 +28,6 @@ pnpm-debug.log*
 *.tfstate
 *.tfstate.backup
 .terraform.lock.hcl
-*.tfvars
 
 # Firebase
 .firebase/

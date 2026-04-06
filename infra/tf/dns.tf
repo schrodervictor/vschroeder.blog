@@ -5,7 +5,7 @@
 # If Firebase ever changes its IPs (extremely unlikely), update here.
 
 resource "spaceship_dns_records" "blog" {
-  domain = var.domain
+  domain = local.domain
 
   records = [
     {

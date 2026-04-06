@@ -1,6 +1,9 @@
 .PHONY: dev build preview deploy clean check test update bootstrap tf-init tf-apply
 
-TF ?= terraform
+TF      ?= terraform
+PROJECT := vschroeder-blog
+BILLING ?=
+REGION  := europe-west10
 
 node_modules: package-lock.json
 	npm clean-install
@@ -37,12 +40,14 @@ update:
 	@touch node_modules
 
 # One-time GCP project bootstrap
-# Usage: make bootstrap PROJECT=my-blog BILLING=012345-6789AB-CDEF01 REGION=europe-west10
+# Usage: make bootstrap BILLING=<billing-account-id>
 bootstrap:
+ifndef BILLING
+	$(error BILLING is required. Usage: make bootstrap BILLING=<billing-account-id>)
+endif
 	./scripts/bootstrap.sh '$(PROJECT)' '$(BILLING)' '$(REGION)'
 
 # Initialize Terraform backend
-# Usage: make tf-init PROJECT=my-blog
 tf-init:
 	cd infra/tf && $(TF) init -backend-config='bucket=$(PROJECT)-infra-state'
 

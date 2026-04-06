@@ -7,7 +7,7 @@ resource "google_project_service" "apis" {
     "dns.googleapis.com",
   ])
 
-  project = var.project_id
+  project = local.project_id
   service = each.value
 
   disable_on_destroy = false

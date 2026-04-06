@@ -57,13 +57,13 @@ One-time setup that creates the GCP project, links billing, and creates a GCS
 bucket for Terraform state. Safe to run multiple times.
 
 ```bash
-make bootstrap PROJECT=vschroeder-blog BILLING=012345-6789AB-CDEF01 REGION=europe-west10
+make bootstrap BILLING=<your-billing-account-id>
 ```
 
 ### 2. Initialize and apply Terraform
 
 ```bash
-make tf-init PROJECT=vschroeder-blog
+make tf-init
 make tf-apply
 ```
 
@@ -81,7 +81,7 @@ Terraform creates:
 ### 3. Deploy
 
 ```bash
-make deploy PROJECT=vschroeder-blog
+make deploy
 ```
 
 This builds the site and deploys to Firebase Hosting in one step.

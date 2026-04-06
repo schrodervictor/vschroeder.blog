@@ -15,7 +15,6 @@ allPosts.forEach(post => {
 
 // Sort tags alphabetically
 const sortedTags = tags.sort((a, b) => a.localeCompare(b));
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 ---
 
 <BaseLayout title="Tags" description="All tags used in posts">
@@ -24,7 +23,7 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
     
     <div class="tags-list">
       {sortedTags.map(tag => (
-        <a href={`${base}tags/${tag}/`} class="tag-item">
+        <a href={`/tags/${tag}/`} class="tag-item">
           <span class="tag-name">#{tag}</span>
           <span class="tag-count">({tagCounts[tag]})</span>
         </a>
