@@ -1,19 +1,52 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const missingBackButtonLabel = "Back to home page";
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+
+const gandalf =
+`⠀⠀⠘⢤⣀⣀⣀⣀⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠉⠛⠛⠿⠿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⣀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠛⠂⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠚⠉⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⠛⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢀⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣠⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠈⠓⠦⣀⠀⠀⠀
+⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠈⠳⣼⡿
+⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠈⠁
+⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣼⣿⣿⣿⣿⣿⣿⡿⠟⠛⠉⠉⠉⠉⠙⠻⠿⣿⣿⣿⣿⣅⠀⠀⠀⠀⠀⠀⠀
+⢰⣿⣿⣿⡿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⠁⠀⠀⠀⠀⠀⠀⠀
+⡾⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀`
 ---
 
 <BaseLayout title="404 - Page Not Found">
   <div class="page">
-    <h1>404 — Page not found...</h1>
-      <p>The page you're looking for doesn't exist. It might have been moved, deleted, or you may have entered the wrong URL.</p>
-      <div>
-        <a href={base} class="button inline">
-          <span class="button__text">{missingBackButtonLabel} →</span>
-        </a>
-      </div>
+    <h1>404 — The road goes ever on, but not here</h1>
+    <p class="quote">
+      "It's a dangerous business, Frodo, going out your door. You step onto
+      the road, and if you don't keep your feet, there's no knowing where you
+      might be swept off to."
+    </p>
+    <pre class="ring">{gandalf}</pre>
+    <p>
+      It seems you've wandered into the Misty Mountains without a map.
+      This page doesn't exist — perhaps a wizard moved it, or perhaps it
+      was never meant to be found.
+    </p>
+    <p>
+      Not all those who wander are lost — but you might be. Let's get you
+      back to the Shire.
+    </p>
+    <div>
+      <a href={base} class="button inline">
+        <span class="button__text">Back to the Shire →</span>
+      </a>
+    </div>
   </div>
 </BaseLayout>
 
@@ -21,5 +54,22 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
   .page {
     max-width: 760px;
     margin: 0 auto;
+  }
+
+  .ring {
+    color: var(--accent);
+    text-align: center;
+    line-height: 1.1;
+    font-size: 0.75rem;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 1.5em auto;
+    overflow: visible;
+  }
+
+  .quote {
+    font-style: italic;
+    color: var(--comment);
   }
 </style>
