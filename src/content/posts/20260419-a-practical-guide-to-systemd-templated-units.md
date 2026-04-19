@@ -37,9 +37,9 @@ template directly, but **instances** of it. The part after `@` is the
 instance name `<service-name>@<instance-name>.service`. For example:
 
 ```
-foo@.service        ← template of "foo" (note the "empty" name)
-foo@alice.service   ← "alice" instance of "foo" service
-foo@bob.service     ← "bob" instance of "foo" service
+foo@.service        <= template of "foo" (note the "empty" name)
+foo@alice.service   <= "alice" instance of "foo" service
+foo@bob.service     <= "bob" instance of "foo" service
 ```
 
 Inside the template file, `%i` expands to the instance name. There are
@@ -128,17 +128,36 @@ different name gets its own independent timer.
 ## Per-instance overrides with drop-ins
 
 The template defines defaults, but what if one instance needs a different
-schedule? Systemd's drop-in mechanism lets you override specific
-directives per instance without touching the template.
+schedule? You could copy the template and edit the copy, but then you'd
+have two nearly identical files to maintain. Systemd has a better
+mechanism: **drop-ins**.
 
-Create a directory named after the specific instance's unit, with a
-`.d` suffix:
+A drop-in is a small configuration fragment that overrides or extends a
+specific unit without modifying the original file. The name comes from
+the idea that you "drop" an extra file into place alongside the unit.
+Systemd finds it automatically, reads it, and merges its directives on
+top of the original.
+
+The convention is directory-based. For any unit, systemd looks for a
+directory with the same name plus a `.d` suffix. Any `.conf` files
+inside that directory are treated as drop-ins for that unit. For
+example, to override the timer for the `nginx` instance:
+
+```
+/etc/systemd/system/
+├── stenogit@.timer              <= the template (all instances)
+└── stenogit@nginx.timer.d/
+    └── override.conf            <= drop-in (only the nginx instance)
+```
+
+Create the directory:
 
 ```shell
 $ sudo mkdir -p /etc/systemd/system/stenogit@nginx.timer.d
 ```
 
-Then write a conf file inside it:
+Then write a `.conf` file inside it (the name doesn't matter, but
+`override.conf` is the convention):
 
 ```ini
 [Timer]
@@ -149,11 +168,12 @@ OnUnitActiveSec=5min
 The empty `OnUnitActiveSec=` on the first line is important. For
 list-typed directives, systemd appends by default. The empty value
 clears the inherited list before setting the new one. Without it, you'd
-end up with two timers firing at different intervals.
+end up with both the template's 15-minute interval and the drop-in's
+5-minute interval active at the same time.
 
-After editing drop-ins, always reload. Systemd caches unit file
-contents in memory, so it won't see your changes until you tell it to
-re-read from disk:
+After adding or editing drop-ins, always reload. Systemd caches unit
+file contents in memory, so it won't see your changes until you tell
+it to re-read from disk:
 
 ```shell
 $ sudo systemctl daemon-reload
@@ -165,7 +185,8 @@ You can verify the final merged configuration with:
 $ systemctl cat stenogit@nginx.timer
 ```
 
-This shows the template plus all drop-ins applied on top.
+This shows the template plus all drop-ins applied on top, so you can
+confirm that the override took effect.
 
 ## User scope vs system scope
 
@@ -266,20 +287,29 @@ script was at `/usr/local/bin/stenogit-watch`, and it internally called
 `status=127/n/a`. Checking `which inotifywait` in the shell confirmed the
 missing binary.
 
-### Step 4: test outside systemd
+### Step 4: test commands using systemd-run
 
-Run the same command with the same environment:
+Don't just `source` the config file and run the command in your
+interactive shell. Your shell has its own `PATH`, `HOME`, and other
+variables that won't be present when systemd runs the service. Instead,
+use `systemd-run` to execute the command through systemd itself, so it
+gets the exact same environment a real unit would:
 
 ```shell
-$ source /etc/stenogit/nginx.conf
-$ INSTANCE=nginx stenogit-commit
+# For system-scope units
+$ sudo systemd-run --pipe --wait bash -c \
+    'source /etc/stenogit/nginx.conf && INSTANCE=nginx stenogit-commit'
+
+# For user-scope units
+$ systemd-run --user --pipe --wait bash -c \
+    'source ~/.config/stenogit/nginx.conf && INSTANCE=nginx stenogit-commit'
 ```
 
-If this works in your shell but fails under systemd, the difference is
-environment. Check `PATH`, `HOME`, and any other variables your script
-depends on.
+If this fails but the command works in your normal shell, the
+difference is environment. Compare `systemctl [--user] show-environment`
+(step 3) with your shell's variables to find what's missing.
 
-### Step 5: trigger manually
+### Step 5: trigger timers manually
 
 For timer-backed services, you don't have to wait for the next tick:
 
