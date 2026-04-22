@@ -31,3 +31,8 @@ pnpm-debug.log*
 
 # Firebase
 .firebase/
+
+# Post drafts
+/drafts
+/old
+*.draft.md
