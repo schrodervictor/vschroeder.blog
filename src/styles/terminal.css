@@ -370,6 +370,18 @@ th {
   letter-spacing: 0.04em;
 }
 
+/* Reference table layout contract.
+   Headers and inline `<code>` stay on a single line; the description
+   column absorbs whatever width is left and wraps freely. Opt in by
+   wrapping the table in <div class="reference-table">...</div> in
+   the markdown. If you remove or rename this class, restore the
+   styling at the call sites. */
+.reference-table th,
+.reference-table th code,
+.reference-table td code {
+  white-space: nowrap;
+}
+
 hr {
   width: 100%;
   border: none;
