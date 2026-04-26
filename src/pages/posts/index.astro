@@ -1,40 +1,56 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/PostCard.astro';
+import PostListItem from '../../components/PostListItem.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('posts'))
   .filter(post => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const totalBytes = posts.reduce(
+  (sum, p) => sum + (p.body ? new Blob([p.body]).size : 0),
+  0
+);
+const totalK = Math.max(1, Math.ceil(totalBytes / 1024));
 ---
 
 <BaseLayout title="Posts">
-  <div class="posts">
-    <h1 class="posts-title">Posts</h1>
+  <div class="posts-listing">
+    <div class="ls-prompt">
+      <span class="ls-prompt-user">vschroeder@blog</span>:<span class="ls-prompt-path">~/posts</span>$ ls -lah
+    </div>
+    <div class="ls-total">total {totalK}</div>
     {posts.length === 0 ? (
       <p>No posts yet. Check back soon!</p>
     ) : (
-      posts.map((post) => <PostCard post={post} />)
+      posts.map((post) => <PostListItem post={post} />)
     )}
   </div>
 </BaseLayout>
 
 <style>
-  .posts-title {
-    position: relative;
-    color: var(--accent);
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 15px;
-    border-bottom: 3px dotted var(--accent);
+  .posts-listing {
+    margin-top: 1rem;
+    overflow-x: auto;
+    scrollbar-color: var(--accent) var(--background);
+    scrollbar-width: thin;
   }
-  
-  .posts-title::after {
-    content: "";
-    position: absolute;
-    bottom: 2px;
-    display: block;
-    width: 100%;
-    border-bottom: 3px dotted var(--accent);
+
+  .ls-prompt {
+    color: color-mix(in srgb, var(--foreground) 70%, transparent);
+    margin-bottom: 0.4rem;
+  }
+
+  .ls-prompt-user {
+    color: var(--accent);
+  }
+
+  .ls-prompt-path {
+    color: color-mix(in srgb, var(--foreground) 85%, transparent);
+  }
+
+  .ls-total {
+    color: color-mix(in srgb, var(--foreground) 55%, transparent);
+    margin-bottom: 1rem;
   }
 </style>

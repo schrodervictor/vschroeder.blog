@@ -1,0 +1,94 @@
+---
+import FormattedDate from './FormattedDate.astro';
+
+export interface Props {
+  post: {
+    slug: string;
+    body?: string;
+    data: {
+      title: string;
+      description?: string;
+      pubDate: Date;
+      externalLink?: string;
+    };
+  };
+}
+
+const { post } = Astro.props;
+const postUrl = post.data.externalLink || `/posts/${post.slug}/`;
+const isExternal = !!post.data.externalLink;
+
+const sizeInBytes = post.body ? new Blob([post.body]).size : 0;
+
+function formatSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes}`;
+  const kb = bytes / 1024;
+  if (kb < 10) return `${kb.toFixed(1)}K`;
+  if (kb < 1024) return `${Math.round(kb)}K`;
+  return `${(kb / 1024).toFixed(1)}M`;
+}
+
+const sizeFormatted = formatSize(sizeInBytes);
+---
+
+<article class="ls-entry">
+  <div class="ls-line">
+    <span class="ls-perms">-rw-r--r--</span>
+    <span class="ls-links">1</span>
+    <span class="ls-owner">vschroeder</span>
+    <span class="ls-group">users</span>
+    <span class="ls-size">{sizeFormatted}</span>
+    <time class="ls-date">
+      <FormattedDate date={post.data.pubDate} />
+    </time>
+    <a
+      class="ls-name"
+      href={postUrl}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener" : undefined}
+    >
+      {post.data.title}
+    </a>
+  </div>
+</article>
+
+<style>
+  .ls-entry {
+    margin: 0.4rem 0;
+  }
+
+  .ls-line {
+    display: flex;
+    gap: 1ch;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+
+  .ls-perms,
+  .ls-links,
+  .ls-owner,
+  .ls-group,
+  .ls-size,
+  .ls-date {
+    color: color-mix(in srgb, var(--foreground) 55%, transparent);
+    flex-shrink: 0;
+  }
+
+  .ls-perms { width: 10ch; }
+  .ls-links { width: 1ch; text-align: right; }
+  .ls-owner { width: 10ch; }
+  .ls-group { width: 5ch; }
+  .ls-size  { width: 4ch; text-align: right; }
+  .ls-date  { width: 10ch; }
+
+  .ls-name {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .ls-name:hover {
+    text-decoration: underline;
+  }
+
+</style>
