@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vschroeder.blog/sitemap-index.xml
