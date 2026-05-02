@@ -8,6 +8,15 @@ export interface Props {
 const { title, image } = Astro.props;
 const description = "VSchroeder's blog: Code, AI, Linux, Metal and more";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const gaSnippet = import.meta.env.PROD ? `
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H0MN42BRSM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H0MN42BRSM');
+  </script>
+` : '';
 ---
 
 <!DOCTYPE html>
@@ -37,14 +46,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="sitemap" href={`/sitemap-index.xml`} />
     <link rel="alternate" type="application/rss+xml" title="RSS" href={`/rss.xml`} />
 
-    <!-- Google Analytics -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-H0MN42BRSM"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-H0MN42BRSM');
-    </script>
+    <Fragment set:html={gaSnippet} />
   </head>
   <body>
     <div class="container center">
