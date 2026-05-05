@@ -267,3 +267,39 @@ sup[data-footnote-ref] a:hover {
   margin-left: 5px;
   font-size: 0.9em;
 }
+
+/* Giscus comments */
+.giscus-comments {
+  margin-top: 50px;
+}
+
+.giscus-title {
+  display: flex;
+  text-align: center;
+  position: relative;
+  margin: 20px 0;
+}
+
+.giscus-title-h {
+  text-align: center;
+  margin: 0 auto;
+  padding: 5px 10px;
+  background: var(--background);
+  color: color-mix(in srgb, var(--foreground) 65%, transparent);
+  font-size: calc(var(--font-size) * .8);
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: .1em;
+  z-index: 1;
+}
+
+.giscus-title hr {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-top: 15px;
+  z-index: 0;
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+}
