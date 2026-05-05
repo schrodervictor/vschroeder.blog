@@ -13,10 +13,13 @@ export interface Props {
 }
 
 const { title, description, pubDate, updatedDate, author, image, tags = [] } = Astro.props;
+
+const giscusTheme = `${Astro.site}giscus.css?v=${Date.now()}`;
 ---
 
 <BaseLayout title={title} description={description} image={image}>
   <script
+    is:inline
     type="application/ld+json"
     set:html={JSON.stringify({
       "@context": "https://schema.org",
@@ -116,6 +119,30 @@ const { title, description, pubDate, updatedDate, author, image, tags = [] } = A
     });
   </script>
   
+  <section class="giscus-comments">
+    <div class="giscus-title">
+      <span class="giscus-title-h">Comments</span>
+      <hr />
+    </div>
+    <script
+      is:inline
+      src="https://giscus.app/client.js"
+      data-repo="schrodervictor/vschroeder.blog"
+      data-repo-id="R_kgDOR7FhAg"
+      data-category-id="DIC_kwDOR7FhAs4C8Ne7"
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme={giscusTheme}
+      data-lang="en"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async
+    ></script>
+  </section>
+
   <!-- Twitter embed script -->
   <script is:inline async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </BaseLayout>
