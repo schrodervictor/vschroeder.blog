@@ -5,10 +5,11 @@ export interface Props {
   image?: string;
 }
 
+import { deriveMdUrl } from '../lib/content-helpers';
+
 const { title, image } = Astro.props;
 const description = "VSchroeder's blog: Code, AI, Linux, Metal and more";
-const pathname = Astro.url.pathname.replace(/\/$/, '');
-const mdUrl = (pathname === '' ? '/index' : pathname) + '.md';
+const mdUrl = deriveMdUrl(Astro.url.pathname);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const gaSnippet = import.meta.env.PROD ? `
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H0MN42BRSM"></script>

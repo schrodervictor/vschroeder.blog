@@ -2,18 +2,19 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import { getNonDraftPosts } from '../../lib/content-helpers';
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection('posts');
-  const uniqueTags = [...new Set(allPosts.map(post => post.data.tags).flat())];
-  
+  const allPosts = getNonDraftPosts(await getCollection('posts'));
+  const uniqueTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
+
   return uniqueTags.map(tag => {
-    const filteredPosts = allPosts
-      .filter(post => post.data.tags?.includes(tag) && !post.data.draft)
-      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    const filtered = getNonDraftPosts(
+      allPosts.filter(post => post.data.tags?.includes(tag))
+    );
     return {
       params: { tag },
-      props: { posts: filteredPosts }
+      props: { posts: filtered },
     };
   });
 }

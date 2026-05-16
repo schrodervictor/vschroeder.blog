@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import {
   formatDate, postMdUrl, tagMdUrl, getNonDraftPosts, mdResponse,
-} from '../lib/markdown-feed';
+} from '../lib/content-helpers';
 
 export const GET: APIRoute = async () => {
   const posts = getNonDraftPosts(await getCollection('posts'));

@@ -2,7 +2,7 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import {
   getNonDraftPosts, postsList, tagHtmlUrl, mdResponse,
-} from '../../lib/markdown-feed';
+} from '../../lib/content-helpers';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const allPosts = (await getCollection('posts'))

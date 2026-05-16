@@ -2,10 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostListItem from '../../components/PostListItem.astro';
 import { getCollection } from 'astro:content';
+import { getNonDraftPosts } from '../../lib/content-helpers';
 
-const posts = (await getCollection('posts'))
-  .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = getNonDraftPosts(await getCollection('posts'));
 
 const totalBytes = posts.reduce(
   (sum, p) => sum + (p.body ? new Blob([p.body]).size : 0),

@@ -1,12 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
+import { getNonDraftPosts } from '../../lib/content-helpers';
 
 export async function getStaticPaths() {
-  const posts = (await getCollection('posts'))
-    .filter(post => !post.data.draft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  
+  const posts = getNonDraftPosts(await getCollection('posts'));
+
   return posts.map((post, index) => ({
     params: { slug: post.slug },
     props: {

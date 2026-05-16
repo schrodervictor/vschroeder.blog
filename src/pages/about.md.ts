@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
-import { mdResponse } from '../lib/markdown-feed';
-import { stripFrontmatter } from '../lib/markdown-feed';
+import { mdResponse, stripFrontmatter } from '../lib/content-helpers';
 import aboutRaw from './about.md?raw';
 
 const body = stripFrontmatter(aboutRaw);

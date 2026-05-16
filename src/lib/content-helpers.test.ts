@@ -12,7 +12,7 @@ import {
   deriveMdUrl,
   renderPostMarkdown,
   countTags,
-} from './markdown-feed';
+} from './content-helpers';
 
 function fakePost(overrides: {
   slug?: string;

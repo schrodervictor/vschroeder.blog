@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { mdResponse } from '../lib/markdown-feed';
+import { mdResponse } from '../lib/content-helpers';
 
 export const GET: APIRoute = async () => {
   const lines = [
