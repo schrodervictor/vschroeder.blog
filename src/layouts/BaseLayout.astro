@@ -7,6 +7,8 @@ export interface Props {
 
 const { title, image } = Astro.props;
 const description = "VSchroeder's blog: Code, AI, Linux, Metal and more";
+const pathname = Astro.url.pathname.replace(/\/$/, '');
+const mdUrl = (pathname === '' ? '/index' : pathname) + '.md';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const gaSnippet = import.meta.env.PROD ? `
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H0MN42BRSM"></script>
@@ -45,6 +47,7 @@ const gaSnippet = import.meta.env.PROD ? `
 
     <link rel="sitemap" href={`/sitemap-index.xml`} />
     <link rel="alternate" type="application/rss+xml" title="RSS" href={`/rss.xml`} />
+    <link rel="alternate" type="text/markdown" title="Markdown" href={mdUrl} />
 
     <Fragment set:html={gaSnippet} />
   </head>
@@ -77,6 +80,10 @@ const gaSnippet = import.meta.env.PROD ? `
             <li><a href={`/tags/`}>Tags</a></li>
             <li><a href={`/about/`}>About</a></li>
           </ul>
+          <span class="nav-alt-links">
+            <a href={mdUrl} class="nav-alt-link">.md</a>
+            <a href="/rss.xml" class="nav-alt-link">rss</a>
+          </span>
         </nav>
       </header>
 

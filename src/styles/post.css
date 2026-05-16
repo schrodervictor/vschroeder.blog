@@ -67,6 +67,26 @@
   content: ", ";
 }
 
+.nav-alt-links {
+  display: flex;
+  gap: 8px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.nav-alt-link {
+  font-size: calc(var(--font-size) * 0.85);
+  color: color-mix(in srgb, var(--foreground) 45%, transparent);
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+  padding: 1px 6px;
+}
+
+.nav-alt-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 .post-cover {
   margin: 20px 0;
 }
