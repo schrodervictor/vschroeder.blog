@@ -125,3 +125,37 @@ export function countTags(posts: Post[]): Record<string, number> {
   }
   return counts;
 }
+
+export function renderLlmsTxt(posts: Post[]): string {
+  const lines = [
+    '# vschroeder.blog',
+    '',
+    '> Code, AI, Linux, Metal and more.',
+    '',
+    'A terminal-themed tech blog by Victor Schroeder.',
+    'Every page on this site is available as pure Markdown by',
+    'appending `.md` to the URL.',
+    '',
+    '## Navigation',
+    '',
+    '- [All posts](/posts.md)',
+    '- [All posts with descriptions](/index.md)',
+    '- [Tags](/tags.md)',
+    '- [About](/about.md)',
+    '- [RSS](/rss.xml)',
+    '',
+    '## Posts',
+    '',
+  ];
+
+  for (const post of posts) {
+    const date = formatDate(post.data.pubDate);
+    const desc = post.data.description
+      ? `: ${post.data.description.trim().replace(/\n/g, ' ')}`
+      : '';
+    lines.push(`- [${post.data.title}](${postMdUrl(post.slug)}) (${date})${desc}`);
+  }
+
+  lines.push('');
+  return lines.join('\n');
+}

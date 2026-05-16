@@ -1,10 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { getNonDraftPosts, renderLlmsTxt } from '../lib/content-helpers';
+import { getNonDraftPosts, renderLlmsTxt, mdResponse } from '../lib/content-helpers';
 
 export const GET: APIRoute = async () => {
   const posts = getNonDraftPosts(await getCollection('posts'));
-  return new Response(renderLlmsTxt(posts), {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-  });
+  return mdResponse(renderLlmsTxt(posts));
 };
