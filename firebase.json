@@ -2,6 +2,12 @@
   "hosting": {
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**/*.md",
+        "destination": "/404.md"
+      }
+    ],
     "headers": [
       {
         "source": "**/*.html",
